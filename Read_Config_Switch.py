@@ -37,8 +37,8 @@ wb=load_workbook("templ.xlsx")
 ws=wb.active
 sh=wb['Sheet']
 
-try:
-    for i,key in enumerate(tqdm.tqdm(ip_dict)):
+for i,key in enumerate(tqdm.tqdm(ip_dict)):
+    try:
         conf['host']=ip_dict[key]    
         net_obj=ConnectHandler(**conf)
         out=net_obj.send_command("show inventory")
@@ -68,8 +68,9 @@ try:
         sh['E{}'.format(i+3)]= '=HYPERLINK("{}","{}")'.format(filename,key)
                
         net_obj.disconnect()
-except:
-    pass
+    except:
+        print("\n Error in Connection to --{}--".format(key))
+        pass
 
 ctx={'dict1': dic}
 doc.render(ctx)
